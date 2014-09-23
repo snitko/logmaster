@@ -2,14 +2,14 @@ require 'logger'
 
 class Logmaster
 
-  attr_accessor :loggers, :log_level, :name, :email_config
+  attr_accessor :loggers, :log_level, :name, :email_config, :raise_exception
 
   def initialize(
     log_level:       Logger::INFO,
-    file:            nil,
-    stdout:          true,
-    raise_exception: false,
-    email_config:    nil,
+    file:            nil,   # if nil, will not log into any file
+    stdout:          true,  # if false, will not log into STDOUR
+    raise_exception: false, # if true, will a raise an Exception after logging it
+    email_config:    nil,   # see email config options for Pony gem
     name:            "Logmaster"
   )
 
