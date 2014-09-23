@@ -52,7 +52,7 @@ describe Logmaster do
       expect(logger).to receive(:fatal).once
     end
     @logmaster.watch_exceptions do
-      raise "Lol what?"
+      1/0
     end
   end
 

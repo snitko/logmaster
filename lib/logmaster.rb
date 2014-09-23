@@ -44,10 +44,12 @@ class Logmaster
     begin
       yield
     rescue Exception => e
-      message = e.message
-      message += "\n\n"
+      message =  e.class.to_s
+      message += ": "
+      message += e.message
+      message += "\n"
       message += "Backtrace:\n"
-      e.backtrace.each { |l| message += "#{l}\n" }
+      e.backtrace.each { |l| message += "    #{l}\n" }
       self.fatal(message)
       raise e if @raise_exception
     end
@@ -63,7 +65,7 @@ class Logmaster
           send_email(type: name, message: args[0]) 
         end
 
-        args[0] = args[0] + "\n\n\n\n"
+        args[0] = args[0] + "\n\n"
         @loggers.each do |logger|
           logger.send(name, *args)
         end
@@ -76,6 +78,7 @@ class Logmaster
       template = ERB.new(File.read(File.expand_path(File.dirname(__FILE__)) +
                          "/../email_templates/message.erb")
                          ).result(binding)
+
       Pony.mail(@email_config.merge({ html_body: template }))
     end
 
