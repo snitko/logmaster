@@ -65,7 +65,6 @@ class Logmaster
           send_email(type: name, message: args[0]) 
         end
 
-        args[0] = args[0] + "\n\n"
         @loggers.each do |logger|
           logger.send(name, *args)
         end
