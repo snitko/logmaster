@@ -32,6 +32,10 @@ class Logmaster
     require 'erb'
 
     @email_config = { via: :sendmail, from: 'logmaster@localhost', subject: "#{@name} message" }
+    
+    # Convert string keys into symbol keys
+    settings = Hash[settings.map{|(k,v)| [k.to_sym,v]}]
+
     @email_config.merge!(settings)
     if @email_config[:to].nil?
       raise "Please specify email addresses of email recipients using :to key in email_config attr (value should be array)"

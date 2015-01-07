@@ -56,4 +56,9 @@ describe Logmaster do
     end
   end
 
+  it "converts keys in the config settings hash into symbols (config.yml parsing makes them strings initially)" do
+    @logmaster.email_config = { 'to' => 'your-email@here.com' }
+    expect(@logmaster.email_config[:to]).not_to be_blank 
+  end
+
 end
