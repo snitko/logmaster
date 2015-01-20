@@ -41,6 +41,11 @@ class Logmaster
       raise "Please specify email addresses of email recipients using :to key in email_config attr (value should be array)"
     end
 
+    # Because pony doesn't like some arbitrary options like log_level
+    # and instead of ignorning them, throws an error.
+    @email_log_level = @email_config[:log_level]
+    @email_config.delete(:log_level)
+
   end
 
   def watch_exceptions
@@ -65,7 +70,7 @@ class Logmaster
 
       if [:unknown, :fatal, :error, :warn, :info, :debug].include?(name)
         
-        if @email_config && @log_level <= Logger.const_get(@email_config[:log_level].to_s.upcase)
+        if @email_config && @log_level <= Logger.const_get(@email_log_level.to_s.upcase)
           send_email(type: name, message: args[0]) 
         end
 
