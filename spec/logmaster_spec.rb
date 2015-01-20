@@ -26,7 +26,7 @@ describe Logmaster do
 
   it "sets email settings" do
     @logmaster.email_config = { to: 'your-email@here.com' } 
-    expect(@logmaster.email_config).to eq({ via: :sendmail, from: 'logmaster@localhost', subject: "Logmaster message", to: 'your-email@here.com' })
+    expect(@logmaster.email_config).to eq({ via: :sendmail, from: 'logmaster@localhost', subject: "Logmaster message", to: 'your-email@here.com', log_level: :warn })
   end
 
   it "sends log messages to each logger" do

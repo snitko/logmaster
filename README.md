@@ -29,10 +29,12 @@ Logmaster can also send emails. It uses Pony (https://github.com/benprew/pony) t
 makes use of sendmail, but you can also specify SMTP options. See Pony docs to learn more. In our
 example I will use the sendmail (which is default):
 
-    logmaster = Logmaster.new( email_config: { to: 'me@email.foo', from: "logmaster@yourapp.com" })
+    logmaster = Logmaster.new( email_config: { to: 'me@email.foo', from: "logmaster@yourapp.com", log_level: :warn })
     logmaster.warn("Wow, this is another warning!")
 
-The second line will trigger sending an email to your address.
+The second line will trigger sending an email to your address. `:log_level` option allows to set which types of
+log entries are sent in an email. For example, you may want to log on log_level INFO, but only send emails
+when a log entry is WARN or more critical.
 
 
 Wathcing the code for Exceptions

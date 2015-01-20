@@ -31,7 +31,7 @@ class Logmaster
     require 'pony'
     require 'erb'
 
-    @email_config = { via: :sendmail, from: 'logmaster@localhost', subject: "#{@name} message" }
+    @email_config = { via: :sendmail, from: 'logmaster@localhost', subject: "#{@name} message", log_level: :warn }
     
     # Convert string keys into symbol keys
     settings = Hash[settings.map{|(k,v)| [k.to_sym,v]}]
@@ -65,7 +65,7 @@ class Logmaster
 
       if [:unknown, :fatal, :error, :warn, :info, :debug].include?(name)
         
-        if @email_config && @log_level <= Logger.const_get(name.to_s.upcase)
+        if @email_config && @log_level <= Logger.const_get(@email_config[:log_level].to_s.upcase)
           send_email(type: name, message: args[0]) 
         end
 
