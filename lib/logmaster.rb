@@ -3,7 +3,7 @@ require 'logger'
 class Logmaster
 
   attr_accessor :loggers, :log_level, :name, :email_config, :raise_exception, 
-                :sentry_config, :active_environments, :current_environment, :email_log_level
+                :sentry_config, :active_environments, :current_environment
 
   def initialize(
     log_level:       Logger::INFO,
@@ -47,10 +47,6 @@ class Logmaster
       raise "Please specify email addresses of email recipients using :to key in email_config attr (value should be array)"
     end
 
-    # Because pony doesn't like some arbitrary options like log_level
-    # and instead of ignorning them, throws an error.
-    # @email_log_level = Logger.const_get(@email_config[:log_level].to_s.upcase)
-    # @email_config.delete(:log_level)
     @log_level = Logger.const_get(@email_config[:log_level].to_s.upcase)
 
   end
