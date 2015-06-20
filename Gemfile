@@ -1,6 +1,7 @@
 source "http://rubygems.org"
 
 gem "pony"
+gem "sentry-raven", :git => "https://github.com/getsentry/raven-ruby.git"
 
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.

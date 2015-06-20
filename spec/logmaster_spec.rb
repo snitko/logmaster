@@ -12,7 +12,15 @@ describe Logmaster do
   LOGFILE = File.expand_path(File.dirname(__FILE__) + '/logfile')
 
   before(:each) do
-    @logmaster = Logmaster.new(file: LOGFILE)
+    # @logmaster = Logmaster.new(file: LOGFILE)
+    @logmaster = Logmaster.new(
+      file: LOGFILE,
+      active_environments: 'development', 
+      current_environment: 'development',
+      sentry_config: { 
+        "dsn" => 'https://c161fd9f6a0f42dcbfa1bee025cc493a:62d8b21cb6cd425ea4c3abb2cfbf76f7@app.getsentry.com/46218',
+      }
+    )
   end
 
   after(:each) do
@@ -40,7 +48,7 @@ describe Logmaster do
   it "sends emails when the log level of a log message is appropriate" do
     @logmaster.email_config = { to: 'your-email@here.com', log_level: :warn } 
 
-    expect(Pony).to receive(:mail).once
+    expect(Pony).to receive(:mail).twice
 
     @logmaster.warn("WARNING bitches!") # Should call Pony.mail
     @logmaster.email_log_level = Logger::FATAL
