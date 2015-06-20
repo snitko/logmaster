@@ -34,8 +34,8 @@ describe Logmaster do
 
   it "sets email settings" do
     @logmaster.email_config = { to: 'your-email@here.com' } 
-    expect(@logmaster.email_config).to eq({ via: :sendmail, from: 'logmaster@localhost', subject: "Logmaster message", to: 'your-email@here.com' })
-    expect(@logmaster.instance_variable_get(:@email_log_level)).to eq(Logger::WARN)
+    expect(@logmaster.email_config).to eq({ via: :sendmail, from: 'logmaster@localhost', subject: "Logmaster message", to: 'your-email@here.com', :log_level=>:warn })
+    expect(@logmaster.instance_variable_get(:@log_level)).to eq(Logger::WARN)
   end
 
   it "sends log messages to each logger" do
@@ -51,7 +51,7 @@ describe Logmaster do
     expect(Pony).to receive(:mail).twice
 
     @logmaster.warn("WARNING bitches!") # Should call Pony.mail
-    @logmaster.email_log_level = Logger::FATAL
+    @logmaster.log_level = Logger::FATAL
     @logmaster.warn("WARNING bitches!") # This time shouldn't, log_level is wrong
   end
 
