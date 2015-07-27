@@ -2,7 +2,7 @@ require 'logger'
 
 class Logmaster
 
-  attr_accessor :loggers, :log_level, :name, :email_config, :raise_exception, :email_log_level
+  attr_accessor :loggers, :log_level, :name, :email_config, :raise_exception, :email_log_level, :logstash_config
 
   def initialize(
     log_level:       Logger::INFO,
@@ -10,6 +10,7 @@ class Logmaster
     stdout:          true,  # if false, will not log into STDOUR
     raise_exception: false, # if true, will a raise an Exception after logging it
     email_config:    nil,   # see email config options for Pony gem
+    logstash_config: nil,   # see https://github.com/dwbutler/logstash-logger#basic-usage
     name:            "Logmaster"
   )
 
@@ -19,9 +20,14 @@ class Logmaster
     @loggers         = []
 
     self.email_config = email_config if email_config
+    @logstash_config = logstash_config
 
     @loggers << ::Logger.new(STDOUT)            if stdout
     @loggers << ::Logger.new(file, 10, 1024000) if file
+    if logstash_config
+      require 'logstash-logger'
+      @loggers << LogStashLogger.new(**logstash_config)
+    end
     @loggers.each { |l| l.level = @log_level }
 
   end
